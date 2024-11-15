@@ -51,6 +51,8 @@ class DataProcessor:
         dxpx, dypx = detection['center_offset']
         width, height = detection['frame_resolution']
         distance = detection['distance']
+        latitude, longitude = coordinates
+
         dx = distance * dxpx / width
         dy = distance * dypx / height
 
@@ -58,12 +60,10 @@ class DataProcessor:
         c, s = np.cos(azimuth), np.sin(azimuth)
         R = np.array(((c, -s), (s, c)))
         v2 = np.matmul(R, v1)
-        x, y = int(v2[0]), int(v2[1])
+        x, y = float(v2[0]), float(v2[1])
 
-        latitude, longitude = coordinates
-
-        latitude = x + latitude
-        longitude = y + longitude
+        latitude = 0.1*x + latitude
+        longitude = 0.1*y + longitude
 
         return latitude, longitude
 
@@ -74,7 +74,8 @@ class DataProcessor:
             record = {"unix_timestamp":detection['unix_timestamp'],
                       "latitude":latitude,
                       "longitude":longitude,
-                      "probability":detection['probability']}
+                      "probability":detection['probability'],
+                      "distance":detection['distance']}
             detection_data.append(record)
         return detection_data
 

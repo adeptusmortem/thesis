@@ -6,9 +6,17 @@ import csv
 import os
 
 class VideoProcessor():
-    def __init__(self, confidence_threshold = 0.3, focal_lengh = 400, save_data = False, path='data/saves/'):
+    def __init__(self, confidence_threshold = 0.3, 
+                 focal_length = 400, 
+                 save_data = False, 
+                 path='data/saves/', 
+                 distance_estimator_type = "rm",
+                 model_path="yolo11n-pose.pt"):
         """ Init function. """
-        self.Detector = HumanDetector(confidence_threshold=confidence_threshold, focal_lengh=focal_lengh) # Creating HumanDetector object
+        self.Detector = HumanDetector(confidence_threshold=confidence_threshold, 
+                                      focal_length=focal_length, 
+                                      distance_estimator_type=distance_estimator_type,
+                                      model_path=model_path) # Creating HumanDetector object
         self.Processor = DataProcessor() # Creating data processor
         self.save_data = save_data
         self.path = path
